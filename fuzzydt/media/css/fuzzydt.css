@@ -1,0 +1,17 @@
+.content form .field>.natural_dtinput_parsed,
+.content form .field>.natural_dtinput_working,
+.content form .field>.natural_dtinput_error,
+.content form .field>.natural_dtinput_ok {
+	color: #000;
+}
+
+.content form .field>.natural_dtinput_error {
+	background-color: #f7d1d2;
+	color: #586c78;
+}
+
+.content form .field>.natural_dtinput_ok {
+	background-color: #d8f7da;
+	color: #586c78;
+}
+
