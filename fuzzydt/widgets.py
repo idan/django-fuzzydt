@@ -65,7 +65,7 @@ class FuzzyDateInput(Input):
     
     class Media:
         css = {
-            'all': ('css/naturaldatetime.css',),
+            'all': ('css/fuzzydt.css',),
         }
         js = ('js/jquery.debounce.js', 'js/jquery.labelify.js')
     
@@ -117,7 +117,7 @@ class FuzzyTimeInput(Input):
     
     class Media:
         css = {
-            'all': ('css/naturaldatetime.css',),
+            'all': ('css/fuzzydt.css',),
         }
         js = ('js/jquery.debounce.js', 'js/jquery.labelify.js')
     
@@ -170,7 +170,7 @@ class FuzzyDateTimeInput(Input):
     tip = 'A date and time like "4 Oct 2009, 11:23p".'
     class Media:
         css = {
-            'all': ('css/naturaldatetime.css',),
+            'all': ('css/fuzzydt.css',),
         }
         js = ('js/jquery.debounce.js', 'js/jquery.labelify.js')
     
