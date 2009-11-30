@@ -7,23 +7,23 @@ import datetime
 # These values, if given to to_python(), will trigger the self.required check.
 EMPTY_VALUES = (None, '')
 
-class NaturalDateField(forms.Field):
-    #widget = NaturalDateInput
+class FuzzyDateField(forms.Field):
+    #widget = FuzzyDateInput
     default_error_messages = {
         'invalid': _(u'Enter a valid date.'),
     }
 
     def __init__(self, url, *args, **kwargs):
         self.url = url
-        self.widget = NaturalDateInput(url=url)
-        super(NaturalDateField, self).__init__(*args, **kwargs)
+        self.widget = FuzzyDateInput(url=url)
+        super(FuzzyDateField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
         """
         Validates that the input can be converted to a date. Returns a Python
         datetime.date object.
         """
-        super(NaturalDateField, self).clean(value)
+        super(FuzzyDateField, self).clean(value)
         if value in EMPTY_VALUES:
             return None
         if isinstance(value, datetime.datetime):
@@ -36,16 +36,16 @@ class NaturalDateField(forms.Field):
             return datetime.date(*parsed[0][:3])
         raise ValidationError(self.error_messages['invalid'])
 
-class NaturalTimeField(forms.Field):
-    #widget = NaturalTimeInput
+class FuzzyTimeField(forms.Field):
+    #widget = FuzzyTimeInput
     default_error_messages = {
         'invalid': _(u'Enter a valid time.')
     }
 
     def __init__(self, url, *args, **kwargs):
         self.url = url
-        self.widget = NaturalTimeInput(url=url)
-        super(NaturalTimeField, self).__init__(*args, **kwargs)
+        self.widget = FuzzyTimeInput(url=url)
+        super(FuzzyTimeField, self).__init__(*args, **kwargs)
 
 
     def clean(self, value):
@@ -53,7 +53,7 @@ class NaturalTimeField(forms.Field):
         Validates that the input can be converted to a time. Returns a Python
         datetime.time object.
         """
-        super(NaturalTimeField, self).clean(value)
+        super(FuzzyTimeField, self).clean(value)
         if value in EMPTY_VALUES:
             return None
         if isinstance(value, datetime.time):
@@ -65,16 +65,16 @@ class NaturalTimeField(forms.Field):
             return datetime.time(*parsed[0][3:6])
         raise ValidationError(self.error_messages['invalid'])
 
-class NaturalDateTimeField(forms.Field):
-    #widget = NaturalDateTimeInput
+class FuzzyDateTimeField(forms.Field):
+    #widget = FuzzyDateTimeInput
     default_error_messages = {
         'invalid': _(u'Enter a valid date/time.'),
     }
 
     def __init__(self, url, *args, **kwargs):
         self.url = url
-        self.widget = NaturalDateTimeInput(url=url)
-        super(NaturalDateTimeField, self).__init__(*args, **kwargs)
+        self.widget = FuzzyDateTimeInput(url=url)
+        super(FuzzyDateTimeField, self).__init__(*args, **kwargs)
     
     def clean(self, value):
         """
@@ -101,8 +101,8 @@ class NaturalDateTimeField(forms.Field):
             return datetime.date(*parsed[0][:6])
         raise ValidationError(self.error_messages['invalid'])
 
-class SplitNaturalDateTimeField(forms.MultiValueField):
-    #widget = SplitNaturalDateTimeWidget
+class SplitFuzzyDateTimeField(forms.MultiValueField):
+    #widget = SplitFuzzyDateTimeWidget
     hidden_widget = forms.widgets.SplitHiddenDateTimeWidget
     default_error_messages = {
         'invalid_date': _(u'Enter a valid date.'),
@@ -111,16 +111,16 @@ class SplitNaturalDateTimeField(forms.MultiValueField):
 
     def __init__(self, url, *args, **kwargs):
         self.url = url
-        self.widget = SplitNaturalDateTimeWidget(url=url)
+        self.widget = SplitFuzzyDateTimeWidget(url=url)
         errors = self.default_error_messages.copy()
         if 'error_messages' in kwargs:
             errors.update(kwargs['error_messages'])
         fields = (
-            NaturalDateField(url=url, error_messages={'invalid': errors['invalid_date']}),
-            NaturalTimeField(url=url, error_messages={'invalid': errors['invalid_time']}),
+            FuzzyDateField(url=url, error_messages={'invalid': errors['invalid_date']}),
+            FuzzyTimeField(url=url, error_messages={'invalid': errors['invalid_time']}),
         )
 
-        super(SplitNaturalDateTimeField, self).__init__(fields, *args, **kwargs)
+        super(SplitFuzzyDateTimeField, self).__init__(fields, *args, **kwargs)
 
     def compress(self, data_list):
         if data_list:

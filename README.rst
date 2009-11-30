@@ -54,5 +54,5 @@ TODO
 * css examples
 * Docs
 * Tests
-* make hidden SplitNaturalDateTimeFields work.
+* make hidden SplitFuzzyDateTimeFields work.
 * I'm sure, lots more...
