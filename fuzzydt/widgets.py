@@ -1,9 +1,8 @@
-from django import forms
+import datetime
+
 from django.forms.widgets import Input, MultiWidget
 from django.utils.safestring import mark_safe
 from django.utils.dateformat import format, time_format
-from parsedatetime.parsedatetime import Calendar
-import datetime
 
 fuzzy_dtinput_template = u'''<div id="parsed_%(name)s" class="fuzzy_dtinput_parsed">%(tip)s</div><br clear="all">
 <script type="text/javascript">
@@ -34,7 +33,7 @@ fuzzy_dtinput_template = u'''<div id="parsed_%(name)s" class="fuzzy_dtinput_pars
                     $('#id_%(name)s').addClass('annotated')
                     $("#parsed_%(name)s").text(json.parsed).attr('class', 'fuzzy_dtinput_ok');
                 }
-            });                
+            });
         }
     }
     // validate the initial contents of the field before labelify
@@ -62,13 +61,13 @@ class FuzzyDateInput(Input):
     format = 'M jS Y' # 'Oct 31st 2009'
     previewformat = 'l, F jS Y' # 'Tuesday, October 31st 2009'
     tip = 'A date, like "Jan 1st 2010" or "next friday".'
-    
+
     class Media:
         css = {
             'all': ('css/fuzzydt.css',),
         }
         js = ('js/jquery.debounce.js', 'js/jquery.labelify.js')
-    
+
     def __init__(self, url, attrs=None, format=None, previewformat=None, tip=None):
         if not attrs:
             attrs = {'class': 'natural_dtinput'}
@@ -85,9 +84,9 @@ class FuzzyDateInput(Input):
             self.previewformat = previewformat
         if tip:
             self.tip = tip
-        
+
         self.attrs['title'] = 'Date'
-    
+
     def _format_value(self, value):
         if value is None:
             return ''
@@ -95,17 +94,17 @@ class FuzzyDateInput(Input):
             return value
         else:
             return format(value, self.format)
-    
+
     def render(self, name, value, attrs=None):
         value = self._format_value(value)
         rendered = super(FuzzyDateInput, self).render(name, value, attrs)
         return rendered + mark_safe(fuzzy_dtinput_template % {
-            'name': name, 
-            'url': self.url, 
+            'name': name,
+            'url': self.url,
             'previewformat': self.previewformat,
             'require': 'date',
             'tip': self.tip })
-    
+
     def _has_changed(self, initial, data):
         return super(FuzzyDateInput, self)._has_changed(self._format_value(initial), data)
 
@@ -114,13 +113,13 @@ class FuzzyTimeInput(Input):
     format = 'g:i A' # '11:59 PM'
     previewformat = 'g:i A' # '11:59 PM'
     tip = 'a time, like "noon", "10a", or "6:23pm".'
-    
+
     class Media:
         css = {
             'all': ('css/fuzzydt.css',),
         }
         js = ('js/jquery.debounce.js', 'js/jquery.labelify.js')
-    
+
     def __init__(self, url, attrs=None, format=None, previewformat=None, tip=None):
         if not attrs:
             attrs = {'class': 'natural_dtinput'}
@@ -129,7 +128,7 @@ class FuzzyTimeInput(Input):
                 attrs['class'] += ' natural_dtinput'
             else:
                 attrs['class'] = 'natural_dtinput'
-        
+
         super(FuzzyTimeInput, self).__init__(attrs)
         self.url = url
         if format:
@@ -138,10 +137,10 @@ class FuzzyTimeInput(Input):
             self.previewformat = previewformat
         if tip:
             self.tip = tip
-        
+
         self.attrs['title'] = 'Time'
-        
-    
+
+
     def _format_value(self, value):
         if value is None:
             return ''
@@ -149,7 +148,7 @@ class FuzzyTimeInput(Input):
             return value
         else:
             return time_format(value, self.format)
-    
+
     def render(self, name, value, attrs=None):
         value = self._format_value(value)
         rendered = super(FuzzyTimeInput, self).render(name, value, attrs)
@@ -159,7 +158,7 @@ class FuzzyTimeInput(Input):
             'previewformat': self.previewformat,
             'require': 'time',
             'tip': self.tip })
-    
+
     def _has_changed(self, initial, data):
         return super(FuzzyTimeInput, self)._has_changed(self._format_value(initial), data)
 
@@ -173,7 +172,7 @@ class FuzzyDateTimeInput(Input):
             'all': ('css/fuzzydt.css',),
         }
         js = ('js/jquery.debounce.js', 'js/jquery.labelify.js')
-    
+
     def __init__(self, url, attrs=None, format=None, previewformat=None, tip=None):
         if not attrs:
             attrs = {'class': 'natural_dtinput'}
@@ -190,25 +189,25 @@ class FuzzyDateTimeInput(Input):
             self.previewformat = previewformat
         if tip:
             self.tip = tip
-        
+
         self.attrs['title'] = 'Date and Time'
-    
+
     def _format_value(self, value):
         if value is None:
             return ''
         else:
             return format(value, self.format)
-    
+
     def render(self, name, value, attrs=None):
         value = self._format_value(value)
         rendered = super(FuzzyDateTimeInput, self).render(name, value, attrs)
         return rendered + mark_safe(fuzzy_dtinput_template % {
-            'name': name, 
-            'url': self.url, 
+            'name': name,
+            'url': self.url,
             'previewformat': self.previewformat,
             'require': 'datetime',
             'tip': self.tip })
-    
+
     def _has_changed(self, initial, data):
         return super(FuzzyDateTimeInput, self)._has_changed(self._format_value(initial), data)
 
@@ -232,7 +231,7 @@ class SplitFuzzyDateTimeWidget(MultiWidget):
             self.time_format = time_format
         if time_previewformat:
             self.time_previewformat = time_previewformat
-        
+
         widgets = (
             FuzzyDateInput(url,
                              attrs=attrs,
