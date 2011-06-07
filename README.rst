@@ -48,7 +48,6 @@ Release History
 TODO
 ----
 
-* Packaging
 * Making it easy to use the included media.
 * Document what external media is used (also that this project requires a customized version of labelify.)
 * css examples

@@ -1,8 +1,10 @@
+import datetime
+
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from fuzzydt.widgets import *
+
 from parsedatetime.parsedatetime import Calendar
-import datetime
 
 # These values, if given to to_python(), will trigger the self.required check.
 EMPTY_VALUES = (None, '')
@@ -17,7 +19,7 @@ class FuzzyDateField(forms.Field):
         self.url = url
         self.widget = FuzzyDateInput(url=url)
         super(FuzzyDateField, self).__init__(*args, **kwargs)
-    
+
     def clean(self, value):
         """
         Validates that the input can be converted to a date. Returns a Python
@@ -58,7 +60,7 @@ class FuzzyTimeField(forms.Field):
             return None
         if isinstance(value, datetime.time):
             return value
-        
+
         c = Calendar()
         parsed = c.parse(value)
         if parsed[1] == 2:
@@ -75,7 +77,7 @@ class FuzzyDateTimeField(forms.Field):
         self.url = url
         self.widget = FuzzyDateTimeInput(url=url)
         super(FuzzyDateTimeField, self).__init__(*args, **kwargs)
-    
+
     def clean(self, value):
         """
         Validates that the input can be converted to a datetime. Returns a
@@ -94,7 +96,7 @@ class FuzzyDateTimeField(forms.Field):
             if len(value) != 2:
                 raise ValidationError(self.error_messages['invalid'])
             value = '%s %s' % tuple(value)
-        
+
         c = Calendar()
         parsed = c.parse(value)
         if parsed[1] == 3:
